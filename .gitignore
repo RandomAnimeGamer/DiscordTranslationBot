@@ -1,0 +1,6 @@
+# 直下フォルダ
+.vscode/
+BotData/
+
+# ディレクトリ全て
+**/__pycache__/
