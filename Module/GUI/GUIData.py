@@ -65,3 +65,15 @@ class GUIData:
             str: 要素の値
         """
         return self._values[target]
+
+    def isElemEventActivation(self, key: str) -> bool:
+        """
+        対象の要素のイベントが発動したかどうか
+
+        Args:
+            key (str) : 対象要素のkey
+
+        Returns:
+            bool: イベントが発動したかどうか
+        """
+        return self.getEvent() == key
