@@ -21,14 +21,14 @@ class GUIMain:
         pass
 
     def Start(self) -> None:
-        self._guiData.setWindowData(
-            sg.Window("Discord Bot", layout=Layout.getBotControl())
-        )
+        """GUI処理を開始する"""
+        self._guiData.setWindowData(sg.Window("Discord Bot", layout=Layout.getLayout()))
 
         self.loop()
         return
 
     def loop(self) -> None:
+        """ループ処理"""
         self._guiData.windowRead()
 
         event: str = self._guiData.getEvent()
