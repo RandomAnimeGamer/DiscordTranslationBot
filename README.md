@@ -1,3 +1,3 @@
 # DiscordTranslationBot
 
-Discordのコン部鯖用の翻訳Botです。
+Discordのコン部サーバー用の翻訳Botです。
