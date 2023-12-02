@@ -1,6 +1,5 @@
 // #region Imports
 const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
-const { token } = require('./config.json');
 const Discord = require('discord.js');
 const bot = new Discord.Client({ intents: [
     Discord.GatewayIntentBits.Guilds,
@@ -25,13 +24,13 @@ bot.once('ready', () => {
     console.log('Logged in as: ' + bot.user.username + ' - (' + bot.user.id + ')\n');
 });
 
-bot.login(token);// process.env.BOT_TOKEN);
+bot.login(process.env.BOT_TOKEN);
 
 bot.on('disconnect', function(event) {
     console.log('----- Bot disconnected from Discord -----');
     if(refresh) {
         console.log('Attempting to reconnect...\n');
-        setTimeout(bot.login(token), 1000);// process.env.BOT_TOKEN), 1000);
+        setTimeout(bot.login(process.env.BOT_TOKEN), 1000);
     } else {
         console.log('No reconnect requested...\n');
     }
