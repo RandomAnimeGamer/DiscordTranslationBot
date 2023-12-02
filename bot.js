@@ -11,9 +11,7 @@ const bot = new Discord.Client({ intents: [
 
 // #region Bot Vars
 var refresh = true;
-var serverid = '1180306041028755476';// '458969795681976353';
-var channelid = '1180306041028755479';// '1179773031430754354';
-var rag_id = '98484620286246912';
+var serverid = '458969795681976353';
 var bot_id = '1180304300505825350';
 // #endregion
 
@@ -40,19 +38,12 @@ bot.on('disconnect', function(event) {
 bot.on('messageCreate', (message) => {
     if (message.author.bot) return;
     let channel = message.channel;
-    let channel_id = message.channelId;
     let message_str = message.content;
     
     // #region Prevent commands out-of-server
     var guild = message.guild.id;
     var guild_null = IsNullOrUndef(message.guild.id);
     if (guild_null || (guild && !guild_null && message.guild.id !== serverid) ) {
-        return;
-    }
-    if(channel_id !== channelid) {
-        return;
-    }
-    if(message.author.id !== rag_id) {
         return;
     }
     // #endregion
