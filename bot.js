@@ -136,7 +136,7 @@ bot.on('messageCreate', (message) => {
             else {
                 let index2 = message_str.search('>');
                 let ref_chnl_id = message_str.substring(index, index2).replace('<', '').replace('#', '').replace('>', '');
-                let ref_chnl = bot.channels.get(ref_chnl_id);
+                let ref_chnl = bot.channels.cache.get(ref_chnl_id);
                 message_str = message_str.substring(0, index) + ref_chnl.name + message_str.substring(index2 + 1);
             }
         }
