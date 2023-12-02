@@ -140,7 +140,7 @@ bot.on('messageCreate', (message) => {
                 message_str = message_str.substring(0, index) + ref_chnl.name + message_str.substring(index2 + 1);
             }
         }
-        message_str = message_str.replace(/(#)+/g, 'hashtag');
+        message_str = message_str.replace(/(#)+/g, 'hashtag ');
 
         CheckFromLanguage(message_str).then((from) => {
             let to = SetToLanguage(from);
