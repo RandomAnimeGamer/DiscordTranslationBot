@@ -13,6 +13,10 @@ const bot = new Discord.Client({ intents: [
 var refresh = true;
 var serverid = '458969795681976353';
 var bot_id = '1180304300505825350';
+var allowed_channels = [
+    '952839887218937856',
+    '830885345875853353',
+];
 // #endregion
 
 // #region Initialize Discord Bot
@@ -38,12 +42,18 @@ bot.on('disconnect', function(event) {
 bot.on('messageCreate', (message) => {
     if (message.author.bot) return;
     let channel = message.channel;
+    let channel_id = message.channelId;
     let message_str = message.content;
+    let test = message_str.trim();
+    if(test == '') return;
     
     // #region Prevent commands out-of-server
     var guild = message.guild.id;
     var guild_null = IsNullOrUndef(message.guild.id);
     if (guild_null || (guild && !guild_null && message.guild.id !== serverid) ) {
+        return;
+    }
+    if(!allowed_channels.includes(channel_id)) {
         return;
     }
     // #endregion
@@ -117,6 +127,10 @@ bot.on('messageCreate', (message) => {
 
     // #region Default Translation
     else {
+        message_str = message_str.replace(/(<@)([0-9])+(>)/g, '@mention');
+        message_str = message_str.replace(/(<#)([0-9])+(>)/g, '#chat');
+        message_str = message_str.replace(/(:)([a-zA-Z0-9_-]+)(:)/g, ':emoji:');
+
         CheckFromLanguage(message_str).then((from) => {
             let to = SetToLanguage(from);
     
