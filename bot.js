@@ -128,8 +128,18 @@ bot.on('messageCreate', (message) => {
     // #region Default Translation
     else {
         message_str = message_str.replace(/(<@)([0-9])+(>)/g, '@mention');
-        message_str = message_str.replace(/(<#)([0-9])+(>)/g, '#chat');
         message_str = message_str.replace(/(:)([a-zA-Z0-9_-]+)(:)/g, ':emoji:');
+        let loop = true;
+        while(loop) {
+            let index = message_str.search('<#');
+            if(index === -1) loop = false;
+            else {
+                let index2 = message_str.search('>');
+                let ref_chnl_id = message_str.substring(index, index2).replace('<', '').replace('#', '').replace('>', '');
+                let ref_chnl = bot.channels.get(ref_chnl_id);
+                message_str = message_str.substring(0, index) + ref_chnl.name + message_str.substring(index2 + 1);
+            }
+        }
 
         CheckFromLanguage(message_str).then((from) => {
             let to = SetToLanguage(from);
