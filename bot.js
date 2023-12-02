@@ -44,6 +44,8 @@ bot.on('messageCreate', (message) => {
     let channel = message.channel;
     let channel_id = message.channelId;
     let message_str = message.content;
+    let test = message_str.trim();
+    if(test == '') return;
     
     // #region Prevent commands out-of-server
     var guild = message.guild.id;
@@ -125,6 +127,10 @@ bot.on('messageCreate', (message) => {
 
     // #region Default Translation
     else {
+        message_str = message_str.replace(/(<@)([0-9])+(>)/g, '@mention');
+        message_str = message_str.replace(/(<#)([0-9])+(>)/g, '#chat');
+        message_str = message_str.replace(/(:)([a-zA-Z0-9_-]+)(:)/g, ':emoji:');
+
         CheckFromLanguage(message_str).then((from) => {
             let to = SetToLanguage(from);
     
