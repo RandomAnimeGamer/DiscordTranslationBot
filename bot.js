@@ -46,7 +46,9 @@ bot.on('messageCreate', (message) => {
     let message_str = message.content;
     let test = message_str.trim();
     if(test == '') return;
-    let hasCommand = (typeof test.split('\n') === 'object' && test.split('\n')[0] === '$translate');
+    let split_cmd = test.split('\n');
+    let hasCommand = (typeof split_cmd === 'object' && split_cmd.length > 1 && split_cmd[0].split(' ')[0] === '$translate');
+    console.log(message_str);
     
     // #region Prevent commands out-of-server
     var guild = message.guild.id;
@@ -148,13 +150,13 @@ bot.on('messageCreate', (message) => {
             message_str = message_str.replace('$translate','');
             let index_of_newline = message_str.search('\n');
             if(index_of_newline !== 0 && index_of_newline !== 1) {
-                let langs = message_str.substring(0, index_of_newline - 1);
+                let langs = message_str.trim().substring(0, index_of_newline - 1).split(' ');
                 if(typeof langs === 'object') {
                     force_trans_from = langs[0];
                     if(langs.length > 1) force_trans_to = langs[1];
                 }
             }
-            message_str = message_str.substring();
+            message_str = message_str.substring(message_str.search('\n') + 1);
         }
 
         CheckFromLanguage(message_str, force_trans_from).then((from) => {
