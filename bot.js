@@ -46,6 +46,7 @@ bot.on('messageCreate', (message) => {
     let message_str = message.content;
     let test = message_str.trim();
     if(test == '') return;
+    let hasCommand = (typeof test.split('\n') === 'object' && test.split('\n')[0] === '$translate');
     
     // #region Prevent commands out-of-server
     var guild = message.guild.id;
@@ -53,14 +54,14 @@ bot.on('messageCreate', (message) => {
     if (guild_null || (guild && !guild_null && message.guild.id !== serverid) ) {
         return;
     }
-    if(!allowed_channels.includes(channel_id)) {
+    if(!allowed_channels.includes(channel_id) && !hasCommand) {
         return;
     }
     // #endregion
 
     // #region Different language requests
     let repliedUser = null;
-    if(message.type === 19 && !IsNullOrUndef(message.mentions) && !IsNullOrUndef(message.mentions.repliedUser)) {
+    if(!hasCommand && message.type === 19 && !IsNullOrUndef(message.mentions) && !IsNullOrUndef(message.mentions.repliedUser)) {
         repliedUser = message.mentions.repliedUser;
     }
 
@@ -142,8 +143,22 @@ bot.on('messageCreate', (message) => {
         }
         message_str = message_str.replace(/(#)+/g, 'hashtag ');
 
-        CheckFromLanguage(message_str).then((from) => {
-            let to = SetToLanguage(from);
+        let force_trans_from = '', force_trans_to = '';
+        if(hasCommand) {
+            message_str = message_str.replace('$translate','');
+            let index_of_newline = message_str.search('\n');
+            if(index_of_newline !== 0 && index_of_newline !== 1) {
+                let langs = message_str.substring(0, index_of_newline - 1);
+                if(typeof langs === 'object') {
+                    force_trans_from = langs[0];
+                    if(langs.length > 1) force_trans_to = langs[1];
+                }
+            }
+            message_str = message_str.substring();
+        }
+
+        CheckFromLanguage(message_str, force_trans_from).then((from) => {
+            let to = SetToLanguage(from, force_trans_to);
     
             if(from === 'DETECT_ERR') {
                 SendMsg(channel, 'There was an error while detecting the language of your message.');
@@ -180,7 +195,9 @@ function SendMsg(channel, text) {
     }
 }
 
-async function CheckFromLanguage(text) {
+async function CheckFromLanguage(text, force_trans_from) {
+    if(force_trans_from !== '') return new Promise((resolve) => { resolve(force_trans_from); });
+
     // https://api.datpmt.com/api/v1/dictionary/detection?string=
     // => [language, confidence]
     // eg => ["en", 0.93254006]
@@ -198,7 +215,9 @@ async function CheckFromLanguage(text) {
     });
 }
 
-function SetToLanguage(from_lang) {
+function SetToLanguage(from_lang, force_trans_to) {
+    if(force_trans_to !== '') return force_trans_to;
+
     switch(from_lang) {
         case 'en': return 'ja';
         case 'ja': return 'en';
