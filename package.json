@@ -1,0 +1,27 @@
+{
+  "name": "translatorbot",
+  "version": "1.0.0",
+  "description": "A simple bot that translates between Japanese and English.",
+  "main": "bot.js",
+  "scripts": {
+    "test": "node bot.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/suwanohiro/DiscordTranslationBot.git"
+  },
+  "author": "suwanohiro, RandomAnimeGamer",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/suwanohiro/DiscordTranslationBot/issues"
+  },
+  "homepage": "https://github.com/suwanohiro/DiscordTranslationBot#readme",
+  "dependencies": {
+    "discord.js": "^14.14.1",
+    "google-translate-api": "^2.3.0",
+    "node-fetch": "^3.3.2"
+  },
+  "devDependencies": {
+    "eslint": "^8.55.0"
+  }
+}
