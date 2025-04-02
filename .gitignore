@@ -341,3 +341,10 @@ ASALocalRun/
 
 # BeatPulse healthcheck temp database
 healthchecksdb
+=======
+# 直下フォルダ
+.vscode/
+BotData/
+
+# ディレクトリ全て
+**/__pycache__/
